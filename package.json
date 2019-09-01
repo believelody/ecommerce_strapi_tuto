@@ -1,11 +1,11 @@
 {
-  "name": "ecommerce_tuto_client",
+  "name": "react_webpack_starter",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server --mode development --hot --port=3000",
-    "build": "wabpack --mode production"
+    "build": "webpack --mode production"
   },
   "keywords": [],
   "author": "",
