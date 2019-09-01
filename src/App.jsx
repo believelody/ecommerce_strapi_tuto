@@ -1,10 +1,11 @@
 import React from 'react'
-// import { BrowserRouter, Switch, Route, Link } from 'react-router-dom'
+import 'gestalt/dist/gestalt.css'
 import { Router, Link } from '@reach/router'
-import HomePage from './pages/HomePage';
-import LoginPage from './pages/LoginPage';
-import RegisterPage from './pages/RegisterPage';
-import CheckoutPage from './pages/CheckoutPage';
+import styled from 'styled-components'
+import HomePage from './pages/HomePage'
+import LoginPage from './pages/LoginPage'
+import RegisterPage from './pages/RegisterPage'
+import CheckoutPage from './pages/CheckoutPage'
 
 const App = () => {
   return (
