@@ -10,6 +10,7 @@ import CheckoutPage from './pages/CheckoutPage'
 import Navbar from './components/navbar/Navbar'
 import { useAppHooks } from './contexts'
 import { SwappingSquaresSpinner, RadarSpinner } from 'react-epic-spinners'
+import Loader from './components/loader/Loader'
 
 const AppStyle = styled.div`
   ul {
@@ -55,9 +56,10 @@ const App = () => {
         {/* <Spinner show={loading} accessibilityLabel='Loading Spinner' /> */}
         {
           loading &&
-          <div className="dimmer">
-            <RadarSpinner className='spinner' color='deepskyblue' />
-          </div>
+          <Loader
+            dimmer='dimmer'
+            spinner='spinner'
+          />
         }
       </Container>
     </AppStyle>
