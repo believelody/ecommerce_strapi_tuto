@@ -31,7 +31,7 @@ return (
         <NavItem path='/' content='Home' />
         <NavItem path='/login' content='Sign In' />
         <NavItem path='/register' content='Sign Up' />
-        <NavItem path='/checkout' content='Checkout' />
+        <NavItem path='/cart' content='Cart' />
     </Box>
   )
 }

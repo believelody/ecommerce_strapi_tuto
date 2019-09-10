@@ -6,12 +6,12 @@ import { Container, Spinner, Box } from 'gestalt'
 import HomePage from './pages/HomePage'
 import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage'
-import CheckoutPage from './pages/CheckoutPage'
 import Navbar from './components/navbar/Navbar'
 import { useAppHooks } from './contexts'
 import Loader from './components/loader/Loader'
 import BrewDetailPage from './pages/BrewDetailPage'
 import BrewsPage from './pages/BrewsPage'
+import CartPage from './pages/CartPage'
 
 const AppStyle = styled.div`
   ul {
@@ -52,7 +52,7 @@ const App = () => {
           <HomePage path='/' />
           <LoginPage path='login' />
           <RegisterPage path='register' />
-          <CheckoutPage path='checkout' />
+          <CartPage path='cart' />
           <BrewsPage path='brands/:brandId/brews' />
           <BrewDetailPage path='brands/:brandId/brews/:brewId' />
         </Router>
