@@ -8,13 +8,11 @@ export const initLoadingState = {
 export const loadingReducer = (state, {type, payload}) => {
     switch(type) {
         case SET_LOADING:
-            console.log(type)
             return {
                 loading: true
             }
                 
         case RESET_LOADING:
-            console.log(type)
             return {
                 loading: false
             }

@@ -22,7 +22,7 @@ const BrandItem = ({ brand }) => {
         <Text bold size='xl'>{brand.name}</Text>
         <Text >{brand.description}</Text>
         <Text size='xl'>
-            <Link to={`/${brand._id}`}>See More</Link>
+            <Link to={`brands/${brand._id}/brews`}>See More</Link>
         </Text>
       </Card>
     </Box>

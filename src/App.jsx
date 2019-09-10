@@ -1,7 +1,7 @@
 import React from 'react'
 import { Router } from '@reach/router'
 import styled from 'styled-components'
-import { Container, Spinner } from 'gestalt'
+import { Container, Spinner, Box } from 'gestalt'
 
 import HomePage from './pages/HomePage'
 import LoginPage from './pages/LoginPage'
@@ -9,8 +9,9 @@ import RegisterPage from './pages/RegisterPage'
 import CheckoutPage from './pages/CheckoutPage'
 import Navbar from './components/navbar/Navbar'
 import { useAppHooks } from './contexts'
-import { SwappingSquaresSpinner, RadarSpinner } from 'react-epic-spinners'
 import Loader from './components/loader/Loader'
+import BrewDetailPage from './pages/BrewDetailPage'
+import BrewsPage from './pages/BrewsPage'
 
 const AppStyle = styled.div`
   ul {
@@ -22,7 +23,7 @@ const AppStyle = styled.div`
   }
 
   .dimmer {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     width: 100vw;
@@ -45,23 +46,24 @@ const App = () => {
 
   return (
     <AppStyle>
+      <Navbar />
       <Container>
-        <Navbar />
         <Router>
-          <HomePage exact path='/' />
-          <LoginPage path='/login' />
-          <RegisterPage path='/register' />
-          <CheckoutPage path='/checkout' />
+          <HomePage path='/' />
+          <LoginPage path='login' />
+          <RegisterPage path='register' />
+          <CheckoutPage path='checkout' />
+          <BrewsPage path='brands/:brandId/brews' />
+          <BrewDetailPage path='brands/:brandId/brews/:brewId' />
         </Router>
-        {/* <Spinner show={loading} accessibilityLabel='Loading Spinner' /> */}
-        {
-          loading &&
-          <Loader
-            dimmer='dimmer'
-            spinner='spinner'
-          />
-        }
       </Container>
+      {/* <Spinner show={loading} accessibilityLabel='Loading Spinner' /> */}
+      <Loader
+        show={loading}
+        dimmer='dimmer'
+        spinner='spinner'
+        size={250}
+      />
     </AppStyle>
   )
 }

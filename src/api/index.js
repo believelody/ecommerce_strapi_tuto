@@ -1,5 +1,6 @@
 import axios from "axios"
 import brand from './brand'
+import brew from './brew'
 import Strapi from 'strapi-sdk-javascript'
 
 export const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:1337'
@@ -9,5 +10,6 @@ const strapi = new Strapi(apiUrl)
 export const post = obj => strapi.request('POST', '/graphql', { data: obj })
 
 export default {
-    brand
+    brand,
+    brew
 }
