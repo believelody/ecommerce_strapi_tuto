@@ -1,13 +1,18 @@
 import React, { useEffect } from 'react'
 import { Link } from '@reach/router'
-import { Box, Mask, Heading, Text } from 'gestalt'
+import { Box, Mask, Heading, Text, Button } from 'gestalt'
 import { useAppHooks } from '../contexts'
 import CartList from '../components/cart/CartList'
-import { IMPORT_CART_FROM_LOCALSTORAGE } from '../reducers/cartReducer'
+import { IMPORT_CART_FROM_LOCALSTORAGE, RESET_CART, SAVE_CART_TO_LOCALSTORAGE } from '../reducers/cartReducer'
 
 const CartPage = () => {
     const { useCart } = useAppHooks()
     const [{cart, total}, dispatchCart] = useCart
+
+    const emptyCart = () => {
+      dispatchCart({ type: RESET_CART })
+      dispatchCart({ type: SAVE_CART_TO_LOCALSTORAGE })
+    }
 
     useEffect(() => {
       if (localStorage.strapi_cart) dispatchCart({ type: IMPORT_CART_FROM_LOCALSTORAGE })
@@ -31,10 +36,11 @@ const CartPage = () => {
                         cart.length > 0 &&
                         <Box>
                             <CartList cart={cart} />
-                            <Text size='lg'>Total: ${total.toFixed(2)}</Text>
-                            <Text>
+                            <Text bold size='xl' align='center'>Total: ${total.toFixed(2)}</Text>
+                            <Text size='lg'>
                                 <Link to='/checkout'>Proceed to payment</Link>
                             </Text>
+                            <Button size='md' text='Empty Cart' onClick={emptyCart} />
                         </Box>
                     }
                 </Box>
