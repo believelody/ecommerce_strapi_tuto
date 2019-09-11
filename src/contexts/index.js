@@ -10,7 +10,7 @@ export const AppProvider = ({ children }) => {
         <AppContext.Provider value={{
             useLoading: useReducer(loadingReducer, initLoadingState),
             useCart: useReducer(cartReducer, initCartState),
-            useAuth: useReducer(authReducer, initAuthState),
+            useAuth: useReducer(authReducer, initAuthState)
         }}>
             {children}
         </AppContext.Provider>

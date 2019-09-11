@@ -1,9 +1,11 @@
 export const SUCCESS_AUTH = 'SUCCESS_AUTH'
 export const ERROR_AUTH = 'ERROR_AUTH'
+export const LOG_OUT = 'LOG_OUT'
 
 export const initAuthState = {
     user: null,
-    isConnected: false
+    isConnected: false,
+    errors: null
 }
 
 export const authReducer = (state, { type, payload }) => {
@@ -18,9 +20,12 @@ export const authReducer = (state, { type, payload }) => {
         case ERROR_AUTH:
             return {
                 ...state,
-                user: null,
+                errors: payload,
                 isConnected: false
             }
+
+        case LOG_OUT:
+            return initAuthState
 
         default:
             return state

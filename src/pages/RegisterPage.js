@@ -1,10 +1,12 @@
 import React from 'react'
+import { Container } from 'gestalt'
+import RegisterForm from '../components/forms/RegisterForm'
 
 const RegisterPage = () => {
   return (
-    <div>
-      Register
-    </div>
+    <Container>
+      <RegisterForm />
+    </Container>
   )
 }
 
