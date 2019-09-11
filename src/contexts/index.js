@@ -3,6 +3,7 @@ import { loadingReducer, initLoadingState } from '../reducers/loadingReducer'
 import { cartReducer, initCartState } from '../reducers/cartReducer'
 import { authReducer, initAuthState } from '../reducers/authReducer'
 import { toastReducer, initToastState } from '../reducers/toastReducer'
+import { modalReducer, initModalState } from '../reducers/modalReducer'
 
 export const AppContext = createContext()
 
@@ -12,7 +13,8 @@ export const AppProvider = ({ children }) => {
             useLoading: useReducer(loadingReducer, initLoadingState),
             useCart: useReducer(cartReducer, initCartState),
             useAuth: useReducer(authReducer, initAuthState),
-            useToast: useReducer(toastReducer, initToastState)
+            useToast: useReducer(toastReducer, initToastState),
+            useModal: useReducer(modalReducer, initModalState)
         }}>
             {children}
         </AppContext.Provider>

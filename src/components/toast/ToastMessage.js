@@ -36,9 +36,8 @@ const ToastMessage = () => {
             },
         }}
         paddingX={1}
-        onClick={deleteToast}
     >
-      <Toast text={msg} />
+        <span onClick={deleteToast}><Toast text={msg} /></span>
     </Box>
   )
 }

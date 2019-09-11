@@ -6,6 +6,7 @@ import { useAppHooks } from '../../contexts'
 import isEmpty from '../../utils/isEmpty'
 import { ERROR_AUTH, RESET_ERROR } from '../../reducers/authReducer'
 import { SET_TOAST } from '../../reducers/toastReducer'
+import { OPEN_MODAL } from '../../reducers/modalReducer'
 
 const RegisterFormStyle = styled.form`
     display: inline-block;
@@ -14,9 +15,10 @@ const RegisterFormStyle = styled.form`
 `
 
 const RegisterForm = () => {
-    const { useAuth, useToast } = useAppHooks()
+    const { useAuth, useToast, useModal } = useAppHooks()
     const [{user, errors}, dispatchAuth] = useAuth
     const [toastState, dispatchToast] = useToast
+    const [modalState, dispatchModal] = useModal
 
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
@@ -25,6 +27,14 @@ const RegisterForm = () => {
     const handleName = e => setName(e.value)
     const handleEmail = e => setEmail(e.value)
     const handlePassword = e => setPassword(e.value)
+
+    const submition = async () => {
+        try {
+            
+        } catch (error) {
+            
+        }
+    }
 
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -39,7 +49,8 @@ const RegisterForm = () => {
             dispatchAuth({ type: ERROR_AUTH, payload: {password: 'password is required'} })
         }
         else {
-            dispatchToast({ type: SET_TOAST, payload: {msg: `Welcome ${name}`} })
+            // dispatchToast({ type: SET_TOAST, payload: {msg: `Welcome ${name}`} })
+            dispatchModal({ type: OPEN_MODAL, payload: {msg: 'There is an error'} })
         }
     }
 
