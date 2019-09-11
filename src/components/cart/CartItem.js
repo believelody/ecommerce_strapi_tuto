@@ -1,7 +1,7 @@
 import React from 'react'
 import { Text, IconButton, Box } from 'gestalt'
 import { useAppHooks } from '../../contexts'
-import { REMOVE_FROM_CART, INCREMENT_QUANTITY, DECREMENT_QUANTITY } from '../../reducers/cartReducer'
+import { REMOVE_FROM_CART, INCREMENT_QUANTITY, DECREMENT_QUANTITY, SAVE_CART_TO_LOCALSTORAGE } from '../../reducers/cartReducer'
 
 const CartItem = ({ item }) => {
   const { useCart } = useAppHooks()
@@ -9,6 +9,7 @@ const CartItem = ({ item }) => {
 
   const removeFromCart = id => {
     dispatchCart({ type: REMOVE_FROM_CART, payload: { _id: id } })
+    dispatchCart({ type: SAVE_CART_TO_LOCALSTORAGE })
   }
 
   const decrementQuantity = (id, quantity) => {
@@ -16,10 +17,12 @@ const CartItem = ({ item }) => {
       dispatchCart({ type: DECREMENT_QUANTITY, payload: {_id: id} })
     else
       removeFromCart(id)
+      dispatchCart({ type: SAVE_CART_TO_LOCALSTORAGE })
   }
 
   const incrementQuantity = (id) => {
     dispatchCart({ type: INCREMENT_QUANTITY, payload: {_id: id} })
+    dispatchCart({ type: SAVE_CART_TO_LOCALSTORAGE })
   }
 
   return (

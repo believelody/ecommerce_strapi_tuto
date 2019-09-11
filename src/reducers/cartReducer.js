@@ -1,3 +1,5 @@
+export const IMPORT_CART_FROM_LOCALSTORAGE = 'IMPORT_CART_FROM_LOCALSTORAGE'
+export const SAVE_CART_TO_LOCALSTORAGE = 'SAVE_CART_TO_LOCALSTORAGE'
 export const ADD_TO_CART = 'ADD_TO_CART'
 export const REMOVE_FROM_CART = 'REMOVE_FROM_CART'
 export const INCREMENT_QUANTITY = 'INCREMENT_QUANTITY'
@@ -9,8 +11,21 @@ export const initCartState = {
     total: 0
 }
 
+const saveCartToLocalStorage = cart => localStorage.setItem('strapi_cart', JSON.stringify(cart))
+
 export const cartReducer = (state, { type, payload }) => {
     switch (type) {
+        case IMPORT_CART_FROM_LOCALSTORAGE:            
+            return {
+                ...state,
+                cart: JSON.parse(localStorage.strapi_cart),
+                total: JSON.parse(localStorage.strapi_cart).reduce((acc, item) => acc + item.quantity * item.product.price, 0)
+            }
+
+        case SAVE_CART_TO_LOCALSTORAGE:
+            saveCartToLocalStorage(state.cart)
+            return state
+
         case ADD_TO_CART:
             return {
                 ...state,

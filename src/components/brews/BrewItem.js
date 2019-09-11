@@ -2,7 +2,7 @@ import React from 'react'
 import { Box, Card, Image, Text, Button } from 'gestalt'
 import {useAppHooks} from '../../contexts'
 import { apiUrl } from '../../api'
-import { ADD_TO_CART } from '../../reducers/cartReducer'
+import { ADD_TO_CART, SAVE_CART_TO_LOCALSTORAGE } from '../../reducers/cartReducer'
 
 const BrewItem = ({ brew }) => {
   const { useCart } = useAppHooks()
@@ -14,6 +14,7 @@ const BrewItem = ({ brew }) => {
         type: ADD_TO_CART,
         payload: { product: brew, quantity: 1 }
       })
+      dispatchCart({ type: SAVE_CART_TO_LOCALSTORAGE })
     }
   }
 

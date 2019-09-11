@@ -3,10 +3,15 @@ import { Link } from '@reach/router'
 import { Box, Mask, Heading, Text } from 'gestalt'
 import { useAppHooks } from '../contexts'
 import CartList from '../components/cart/CartList'
+import { IMPORT_CART_FROM_LOCALSTORAGE } from '../reducers/cartReducer'
 
 const CartPage = () => {
     const { useCart } = useAppHooks()
     const [{cart, total}, dispatchCart] = useCart
+
+    useEffect(() => {
+      if (localStorage.strapi_cart) dispatchCart({ type: IMPORT_CART_FROM_LOCALSTORAGE })
+    }, [])
 
   return (
     <Box marginTop={4}>
