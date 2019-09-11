@@ -4,9 +4,13 @@ import { Box, Heading, Text, Label, Button } from 'gestalt'
 import FieldInput from '../input/FieldInput'
 import { useAppHooks } from '../../contexts'
 import isEmpty from '../../utils/isEmpty'
-import { ERROR_AUTH, RESET_ERROR } from '../../reducers/authReducer'
+import { ERROR_AUTH, RESET_ERROR, SUCCESS_AUTH } from '../../reducers/authReducer'
 import { SET_TOAST } from '../../reducers/toastReducer'
 import { OPEN_MODAL } from '../../reducers/modalReducer'
+import { SET_LOADING, RESET_LOADING } from '../../reducers/loadingReducer'
+import api from '../../api'
+import { navigate } from '@reach/router'
+import {setToken} from '../../utils/token.utils'
 
 const RegisterFormStyle = styled.form`
     display: inline-block;
@@ -15,10 +19,11 @@ const RegisterFormStyle = styled.form`
 `
 
 const RegisterForm = () => {
-    const { useAuth, useToast, useModal } = useAppHooks()
+    const { useAuth, useToast, useModal, useLoading } = useAppHooks()
     const [{user, errors}, dispatchAuth] = useAuth
     const [toastState, dispatchToast] = useToast
     const [modalState, dispatchModal] = useModal
+    const [{loading}, dispatchLoading] = useLoading
 
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
@@ -30,10 +35,23 @@ const RegisterForm = () => {
 
     const submition = async () => {
         try {
-            
+            const res = await api.user.register(name, email, password)
+            setName('')
+            setEmail('')
+            setPassword('')
+            dispatchAuth({ 
+                type: SUCCESS_AUTH, 
+                payload: {
+                    user: { _id: res.user._id, name: res.user.username, email: res.user.email }
+                }
+            })
+            setToken(res.jwt)
+            dispatchToast({ type: SET_TOAST, payload: { msg: `Welcome ${name}` } })
+            navigate('/')
         } catch (error) {
-            
+            dispatchAuth({ type: ERROR_AUTH, payload: { auth_failed: 'there is an error' } })
         }
+        dispatchLoading({ type: RESET_LOADING })
     }
 
     const handleSubmit = (e) => {
@@ -49,13 +67,15 @@ const RegisterForm = () => {
             dispatchAuth({ type: ERROR_AUTH, payload: {password: 'password is required'} })
         }
         else {
-            // dispatchToast({ type: SET_TOAST, payload: {msg: `Welcome ${name}`} })
-            dispatchModal({ type: OPEN_MODAL, payload: {msg: 'There is an error'} })
+            dispatchLoading({ type: SET_LOADING })
+            submition()
         }
     }
 
     useEffect(() => {
-        // console.log(errors)
+        if (errors && errors.auth_failed) {
+            dispatchModal({ type: OPEN_MODAL, payload: { msg: errors.auth_failed } })
+        }
     }, [errors])
 
   return (
@@ -119,7 +139,7 @@ const RegisterForm = () => {
                 />
             </Box>
             <Box paddingY={2}>
-                <Button type='submit' text='Sign Up' color='blue' />
+                <Button disabled={loading} type='submit' text='Sign Up' color='blue' />
             </Box>
         </RegisterFormStyle>
     </Box>

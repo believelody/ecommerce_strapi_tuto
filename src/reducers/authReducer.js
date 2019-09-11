@@ -14,7 +14,7 @@ export const authReducer = (state, { type, payload }) => {
         case SUCCESS_AUTH:
             return {
                 ...state,
-                user: payload,
+                user: payload.user,
                 isConnected: true
             }
 

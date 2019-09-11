@@ -1,5 +1,5 @@
-import React from 'react'
-import { Router } from '@reach/router'
+import React, { useEffect } from 'react'
+import { Router, navigate } from '@reach/router'
 import styled from 'styled-components'
 import { Container, Spinner, Box } from 'gestalt'
 
@@ -14,6 +14,8 @@ import BrewsPage from './pages/BrewsPage'
 import CartPage from './pages/CartPage'
 import ToastMessage from './components/toast/ToastMessage'
 import ModalMessage from './components/modal/ModalMessage'
+import AuthRoute from './components/auth-routes/AuthRoute'
+import { getToken } from './utils/token.utils'
 
 const AppStyle = styled.div`
   ul {
@@ -42,21 +44,27 @@ const AppStyle = styled.div`
 `
 
 const App = () => {
-  const { useLoading } = useAppHooks()
-
+  const { useLoading, useAuth } = useAppHooks()
+  const [{isConnected}, dispatchAuth] = useAuth
   const [{ loading }, dispatchLoading] = useLoading
+
+  // useEffect(() => {
+  //   if (getToken()) {
+  //     dispatchAuth({})
+  //   }
+  // }, [getToken])
 
   return (
     <AppStyle>
       <Navbar />
       <Container>
         <Router>
-          <HomePage path='/' />
+          <AuthRoute path='/' component={HomePage} />
+          <AuthRoute path='cart' component={CartPage} />
+          <AuthRoute path='brands/:brandId/brews' component={BrewsPage} />
+          <AuthRoute path='brands/:brandId/brews/:brewId' component={BrewDetailPage} />
           <LoginPage path='login' />
           <RegisterPage path='register' />
-          <CartPage path='cart' />
-          <BrewsPage path='brands/:brandId/brews' />
-          <BrewDetailPage path='brands/:brandId/brews/:brewId' />
         </Router>
       </Container>
       {/* <Spinner show={loading} accessibilityLabel='Loading Spinner' /> */}

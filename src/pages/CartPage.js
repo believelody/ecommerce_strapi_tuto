@@ -4,6 +4,7 @@ import { Box, Mask, Heading, Text, Button } from 'gestalt'
 import { useAppHooks } from '../contexts'
 import CartList from '../components/cart/CartList'
 import { IMPORT_CART_FROM_LOCALSTORAGE, RESET_CART, SAVE_CART_TO_LOCALSTORAGE } from '../reducers/cartReducer'
+import { getCart } from '../utils/cart.utils'
 
 const CartPage = () => {
     const { useCart } = useAppHooks()
@@ -15,7 +16,9 @@ const CartPage = () => {
     }
 
     useEffect(() => {
-      if (localStorage.strapi_cart) dispatchCart({ type: IMPORT_CART_FROM_LOCALSTORAGE })
+      if (localStorage.strapi_cart) {
+        dispatchCart({ type: IMPORT_CART_FROM_LOCALSTORAGE, payload: {cart: getCart()} })
+      }
     }, [])
 
   return (
