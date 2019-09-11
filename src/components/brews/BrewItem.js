@@ -1,9 +1,22 @@
 import React from 'react'
 import { Box, Card, Image, Text, Button } from 'gestalt'
-import { Link } from '@reach/router'
+import {useAppHooks} from '../../contexts'
 import { apiUrl } from '../../api'
+import { ADD_TO_CART } from '../../reducers/cartReducer'
 
-const BrewItem = ({ brew, brandId }) => {
+const BrewItem = ({ brew }) => {
+  const { useCart } = useAppHooks()
+  const [{cart}, dispatchCart] = useCart
+
+  const addToCart = brew => {
+    if (!cart.find(item => item.product.name === brew.name)) {
+      dispatchCart({
+        type: ADD_TO_CART,
+        payload: { product: brew, quantity: 1 }
+      })
+    }
+  }
+
   return (
     <Box width={300} margin={1} shape="rounded" dangerouslySetInlineStyle={{
       __style: {
@@ -23,13 +36,19 @@ const BrewItem = ({ brew, brandId }) => {
           </Box>
         }
       >
-        <Box display='flex' justifyContent='between'>
+        <Box display='flex' justifyContent='between' paddingX={2}>
           <Text bold size='xl'>{brew.name}</Text>
           <Text bold size='xl' color='olive'>${brew.price}</Text>
         </Box>
-        <Text>{brew.description}</Text>
+        <Box paddingX={2}>
+          <Text>{brew.description}</Text>
+        </Box>
         <Box marginTop={2}>
-          <Button color='blue' text='Add to Cart' />
+          {
+            !cart.find(item => item.product.name === brew.name) ?
+            <Button onClick={e => addToCart(brew)} color='blue' text='Add to Cart' /> :
+            <Button color='white' text='Added to Cart' />
+          }
         </Box>
       </Card>
     </Box>

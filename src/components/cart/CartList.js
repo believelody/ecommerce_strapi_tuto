@@ -1,10 +1,14 @@
 import React from 'react'
+import { Box } from 'gestalt'
+import CartItem from './CartItem'
 
-const CartList = () => {
+const CartList = ({ cart }) => {
   return (
-    <div>
-      
-    </div>
+    <Box>
+      {
+        cart.map(item => <CartItem key={item.product._id} item={item} />)
+      }
+    </Box>
   )
 }
 
