@@ -3,6 +3,8 @@ import styled from 'styled-components'
 import { Box, Heading, Text, Label, Button } from 'gestalt'
 import FieldInput from '../input/FieldInput'
 import { useAppHooks } from '../../contexts'
+import isEmpty from '../../utils/isEmpty'
+import { ERROR_AUTH, RESET_ERROR } from '../../reducers/authReducer'
 
 const RegisterFormStyle = styled.form`
     display: inline-block;
@@ -24,7 +26,24 @@ const RegisterForm = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
+        dispatchAuth({ type: RESET_ERROR })
+        if (isEmpty(name)) {
+            dispatchAuth({ type: ERROR_AUTH, payload: {name: 'name is required'} })
+        }
+        else if (isEmpty(email)) {
+            dispatchAuth({ type: ERROR_AUTH, payload: {email: 'email is required'} })
+        }
+        else if (isEmpty(password)) {
+            dispatchAuth({ type: ERROR_AUTH, payload: {password: 'password is required'} })
+        }
+        else {
+
+        }
     }
+
+    useEffect(() => {
+        // console.log(errors)
+    }, [errors])
 
   return (
     <Box
@@ -55,6 +74,7 @@ const RegisterForm = () => {
                     value={name}
                     placeholder='Enter your Name'
                     handleChange={handleName}
+                    error={!!errors && errors.name}
                 />
             </Box>
             <Box display='flex' alignItems='center' justifyContent='between' paddingY={2}>
@@ -68,6 +88,7 @@ const RegisterForm = () => {
                     value={email}
                     placeholder='Enter your Email. Ex: prenom@messagerie.com'
                     handleChange={handleEmail}
+                    error={!!errors && errors.email}
                 />
             </Box>
             <Box display='flex' alignItems='center' justifyContent='between' paddingY={2}>
@@ -81,10 +102,11 @@ const RegisterForm = () => {
                     value={password}
                     placeholder='Enter your Password'
                     handleChange={handlePassword}
+                    error={!!errors && errors.password}
                 />
             </Box>
             <Box paddingY={2}>
-                <Button text='Sign Up' color='blue' />
+                <Button type='submit' text='Sign Up' color='blue' />
             </Box>
         </RegisterFormStyle>
     </Box>

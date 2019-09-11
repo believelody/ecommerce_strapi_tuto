@@ -1,7 +1,7 @@
 import React from 'react'
 import { TextField } from 'gestalt'
 
-const FieldInput = ({ name, id, value, placeholder, type, handleChange }) => {
+const FieldInput = ({ name, id, value, placeholder, type, handleChange, error }) => {
   return (
     <TextField
       name={name}
@@ -10,6 +10,7 @@ const FieldInput = ({ name, id, value, placeholder, type, handleChange }) => {
       type={type}
       onChange={handleChange}
       value={value}
+      errorMessage={error ? error : null}
     />
   )
 }
