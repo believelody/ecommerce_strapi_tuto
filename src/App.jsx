@@ -12,6 +12,7 @@ import Loader from './components/loader/Loader'
 import BrewDetailPage from './pages/BrewDetailPage'
 import BrewsPage from './pages/BrewsPage'
 import CartPage from './pages/CartPage'
+import ToastMessage from './components/toast/ToastMessage'
 
 const AppStyle = styled.div`
   ul {
@@ -64,6 +65,7 @@ const App = () => {
         spinner='spinner'
         size={250}
       />
+      <ToastMessage />
     </AppStyle>
   )
 }

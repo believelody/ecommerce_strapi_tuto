@@ -5,6 +5,7 @@ import FieldInput from '../input/FieldInput'
 import { useAppHooks } from '../../contexts'
 import isEmpty from '../../utils/isEmpty'
 import { ERROR_AUTH, RESET_ERROR } from '../../reducers/authReducer'
+import { SET_TOAST } from '../../reducers/toastReducer'
 
 const RegisterFormStyle = styled.form`
     display: inline-block;
@@ -13,8 +14,9 @@ const RegisterFormStyle = styled.form`
 `
 
 const RegisterForm = () => {
-    const { useAuth } = useAppHooks()
+    const { useAuth, useToast } = useAppHooks()
     const [{user, errors}, dispatchAuth] = useAuth
+    const [toastState, dispatchToast] = useToast
 
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
@@ -37,7 +39,7 @@ const RegisterForm = () => {
             dispatchAuth({ type: ERROR_AUTH, payload: {password: 'password is required'} })
         }
         else {
-
+            dispatchToast({ type: SET_TOAST, payload: {msg: `Welcome ${name}`} })
         }
     }
 
