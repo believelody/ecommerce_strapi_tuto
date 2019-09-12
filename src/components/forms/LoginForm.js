@@ -11,6 +11,7 @@ import { SET_LOADING, RESET_LOADING } from '../../reducers/loadingReducer'
 import api from '../../api'
 import { navigate } from '@reach/router'
 import { setToken } from '../../utils/token.utils'
+import { setUser } from '../../utils/user.utils'
 
 const LoginFormStyle = styled.form`
     display: inline-block;
@@ -41,6 +42,7 @@ const LoginForm = () => {
                 }
             })
             setToken(res.jwt)
+            setUser({ _id: res.user._id, name: res.user.username, email: res.user.email })
             dispatchToast({ type: SET_TOAST, payload: { msg: `Welcome ${res.user.username}` } })
             setEmail('')
             setPassword('')
