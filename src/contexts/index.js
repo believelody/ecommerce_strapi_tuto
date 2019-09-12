@@ -4,6 +4,7 @@ import { cartReducer, initCartState } from '../reducers/cartReducer'
 import { authReducer, initAuthState } from '../reducers/authReducer'
 import { toastReducer, initToastState } from '../reducers/toastReducer'
 import { modalReducer, initModalState } from '../reducers/modalReducer'
+import { checkoutReducer, initCheckoutState } from '../reducers/checkoutReducer'
 
 export const AppContext = createContext()
 
@@ -14,7 +15,8 @@ export const AppProvider = ({ children }) => {
             useCart: useReducer(cartReducer, initCartState),
             useAuth: useReducer(authReducer, initAuthState),
             useToast: useReducer(toastReducer, initToastState),
-            useModal: useReducer(modalReducer, initModalState)
+            useModal: useReducer(modalReducer, initModalState),
+            useCheckout: useReducer(checkoutReducer, initCheckoutState)
         }}>
             {children}
         </AppContext.Provider>

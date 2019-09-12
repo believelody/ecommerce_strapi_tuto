@@ -3,15 +3,16 @@ import { Router, navigate } from '@reach/router'
 import styled from 'styled-components'
 import { Container, Spinner, Box } from 'gestalt'
 
+import { useAppHooks } from './contexts'
 import HomePage from './pages/HomePage'
 import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage'
 import Navbar from './components/navbar/Navbar'
-import { useAppHooks } from './contexts'
 import Loader from './components/loader/Loader'
 import BrewDetailPage from './pages/BrewDetailPage'
 import BrewsPage from './pages/BrewsPage'
 import CartPage from './pages/CartPage'
+import CheckoutPage from './pages/CheckoutPage'
 import ToastMessage from './components/toast/ToastMessage'
 import ModalMessage from './components/modal/ModalMessage'
 import AuthRoute from './components/auth-routes/AuthRoute'
@@ -61,6 +62,7 @@ const App = () => {
         <Router>
           <AuthRoute path='/' component={HomePage} />
           <AuthRoute path='cart' component={CartPage} />
+          <AuthRoute path='checkout' component={CheckoutPage} />
           <AuthRoute path='brands/:brandId/brews' component={BrewsPage} />
           <AuthRoute path='brands/:brandId/brews/:brewId' component={BrewDetailPage} />
           <LoginPage path='login' />

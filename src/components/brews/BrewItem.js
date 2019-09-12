@@ -1,9 +1,9 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Box, Card, Image, Text, Button } from 'gestalt'
 import {useAppHooks} from '../../contexts'
 import { apiUrl } from '../../api'
-import { ADD_TO_CART, SAVE_CART_TO_LOCALSTORAGE } from '../../reducers/cartReducer'
-import { saveCart } from '../../utils/cart.utils'
+import { ADD_TO_CART, SAVE_CART_TO_LOCALSTORAGE, IMPORT_CART_FROM_LOCALSTORAGE } from '../../reducers/cartReducer'
+import { saveCart, getCart } from '../../utils/cart.utils'
 
 const BrewItem = ({ brew }) => {
   const { useCart } = useAppHooks()
@@ -15,9 +15,20 @@ const BrewItem = ({ brew }) => {
         type: ADD_TO_CART,
         payload: { product: brew, quantity: 1 }
       })
-      saveCart(cart)
     }
   }
+
+  useEffect(() => {
+    if (getCart()) {
+      dispatchCart({ type: IMPORT_CART_FROM_LOCALSTORAGE, payload: { cart: getCart()} })
+    }
+  }, [getCart])
+
+  useEffect(() => {
+    if (cart.length > 0) {
+      saveCart(cart)
+    }
+  }, [cart])
 
   return (
     <Box width={300} margin={1} shape="rounded" dangerouslySetInlineStyle={{

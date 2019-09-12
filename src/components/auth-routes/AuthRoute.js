@@ -2,10 +2,10 @@ import React from 'react'
 import { Redirect } from '@reach/router'
 import { getToken } from '../../utils/token.utils'
 
-const AuthRoute = ({ component: Component, path }) => {
+const AuthRoute = ({ component: Component, ...rest }) => {
   return (
     getToken() ?
-    <Component path={path} /> :
+    <Component {...rest} /> :
     <Redirect to='/login' />
   )
 }
