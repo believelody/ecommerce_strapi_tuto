@@ -5,7 +5,7 @@ import { CLOSE_MODAL } from '../../reducers/modalReducer'
 
 const ModalMessage = () => {
     const { useModal } = useAppHooks()
-    const [{isOpened, msg}, dispatchModal] = useModal
+    const [{isOpened, msg, children, title, size, role}, dispatchModal] = useModal
 
     const closeModal = () => dispatchModal({ type: CLOSE_MODAL })
 
@@ -14,13 +14,13 @@ const ModalMessage = () => {
     <Box>
       <Modal
         accessibilityCloseLabel="close"
-        accessibilityModalLabel="Modal"
-        heading="Error"
+        accessibilityModalLabel={!children ? "Modal" : title}
+        heading={!children ? "Error" : title}
         onDismiss={closeModal}
-        size="sm"
-        role='alertdialog'
+        size={!children ? "sm" : size}
+        role={!children ? 'alertdialog' : role}
       >
-          <Text bold size='xl' align='center'>{msg}</Text>
+          {!children ? <Text bold size='xl' align='center'>{msg}</Text> : children}
       </Modal>
     </Box>
   )

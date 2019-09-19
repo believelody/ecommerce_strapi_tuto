@@ -13,6 +13,7 @@ import { navigate } from '@reach/router'
 import { PAYMENT_FAILED } from '../../reducers/checkoutReducer'
 import { IMPORT_CART_FROM_LOCALSTORAGE } from '../../reducers/cartReducer'
 import { getCart } from '../../utils/cart.utils';
+import StripeCheckout from '../stripe/StripeCheckout';
 
 const CheckoutFormStyle = styled.form`
     display: inline-block;
@@ -66,8 +67,8 @@ const CheckoutForm = () => {
             dispatchCheckout({ type: PAYMENT_FAILED, payload: { city: 'city is required' } })
         }
         else {
-            dispatchLoading({ type: SET_LOADING })
-            submition()
+            dispatchLoading({ type: SET_LOADING, payload: {msg: 'Submitting Order, please wait...'} })
+            // submition()
         }
     }
 
@@ -163,6 +164,7 @@ const CheckoutForm = () => {
                         error={!!errors && errors.zip}
                     />
                 </Box>
+                <StripeCheckout />
                 <Box paddingY={2}>
                     <button id='stripe__button' type='submit'>Confirm Order</button>
                 </Box>
