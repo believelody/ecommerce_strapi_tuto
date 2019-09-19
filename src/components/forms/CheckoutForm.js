@@ -22,12 +22,13 @@ const CheckoutFormStyle = styled.form`
 `
 
 const CheckoutForm = ({ stripe }) => {
-    const { useCheckout, useToast, useModal, useLoading, useCart } = useAppHooks()
+    const { useCheckout, useToast, useModal, useLoading, useCart, useAuth } = useAppHooks()
     const [{ isPaymentSucceed, errors }, dispatchCheckout] = useCheckout
     const [toastState, dispatchToast] = useToast
     const [modalState, dispatchModal] = useModal
     const [{ loading }, dispatchLoading] = useLoading
     const [{cart, total}, dispatchCart] = useCart
+    const [{user}, dispatchAuth] = useAuth
 
     const [address, setAddress] = useState('')
     const [optional, setOptional] = useState('')
@@ -50,6 +51,12 @@ const CheckoutForm = ({ stripe }) => {
               zip,
               city,
               token
+            })
+            await api.order.sendOrderEmail({
+              to: 'believelody@gmail.com',
+              subject: `Order Confirmation - StrapiTuto ${new Date()}`,
+              text: 'Your order has been processed',
+              html: '<bold>Expect your order to arrive in 2-3 shipping days</bold>'
             })
             setAddress('')
             setOptional('')
