@@ -10,9 +10,9 @@ import { OPEN_MODAL } from '../../reducers/modalReducer'
 import { SET_LOADING, RESET_LOADING } from '../../reducers/loadingReducer'
 import api from '../../api'
 import { navigate } from '@reach/router'
-import { PAYMENT_FAILED } from '../../reducers/checkoutReducer'
-import { IMPORT_CART_FROM_LOCALSTORAGE } from '../../reducers/cartReducer'
-import { getCart } from '../../utils/cart.utils';
+import { PAYMENT_FAILED, RESET_ERROR } from '../../reducers/checkoutReducer'
+import { IMPORT_CART_FROM_LOCALSTORAGE, RESET_CART } from '../../reducers/cartReducer'
+import { getCart, resetCart } from '../../utils/cart.utils';
 import StripeCheckout from '../stripe/StripeCheckout';
 
 const CheckoutFormStyle = styled.form`
@@ -21,7 +21,7 @@ const CheckoutFormStyle = styled.form`
     max-width: 450;
 `
 
-const CheckoutForm = () => {
+const CheckoutForm = ({ stripe }) => {
     const { useCheckout, useToast, useModal, useLoading, useCart } = useAppHooks()
     const [{ isPaymentSucceed, errors }, dispatchCheckout] = useCheckout
     const [toastState, dispatchToast] = useToast
@@ -41,22 +41,35 @@ const CheckoutForm = () => {
 
     const submition = async () => {
         try {
-            // const res = await api.user.login(address, optional, city, zip)
-            dispatchToast({ type: SET_TOAST, payload: { msg: `` } })
+            const res = await stripe.createToken()
+            let token = res.token.id
+            await api.order.createOrder({
+              amount: +total,
+              products: cart,
+              address,
+              zip,
+              city,
+              token
+            })
             setAddress('')
             setOptional('')
             setCity('')
             setZIP('')
+            dispatchLoading({ type: RESET_LOADING })
+            resetCart()
+            dispatchCart({ type: RESET_CART })
+            dispatchToast({ type: SET_TOAST, payload: { msg: `Your order was successfully submitted. Thanks for your purchase` } })
+            navigate('/')
         } catch (error) {
             console.log(error.message)
             dispatchCheckout({ type: PAYMENT_FAILED, payload: { payment_failed: error.message } })
+            dispatchLoading({ type: RESET_LOADING })
         }
-        dispatchLoading({ type: RESET_LOADING })
     }
 
     const confirmOrder = (e) => {
         e.preventDefault()
-        dispatchCheckout({ type: RESET_ERRORS })
+        dispatchCheckout({ type: RESET_ERROR })
         if (isEmpty(address)) {
             dispatchCheckout({ type: PAYMENT_FAILED, payload: { address: 'address is required' } })
         }
@@ -68,15 +81,18 @@ const CheckoutForm = () => {
         }
         else {
             dispatchLoading({ type: SET_LOADING, payload: {msg: 'Submitting Order, please wait...'} })
-            // submition()
+            submition()
         }
     }
 
     useEffect(() => {
-      if (cart.length === 0) {
+      if (!getCart()) {
+        navigate('/cart')
+      }
+      if (cart.length === 0 && getCart()) {
         dispatchCart({ type: IMPORT_CART_FROM_LOCALSTORAGE, payload: {cart: getCart()} })
       }
-    }, [cart])
+    }, [])
 
     useEffect(() => {
         if (errors && errors.payment_failed) {

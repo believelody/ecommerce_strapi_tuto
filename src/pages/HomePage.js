@@ -33,7 +33,7 @@ const HomePage = () => {
   }
 
   const resetLoading = () => dispatchLoading({ type: RESET_LOADING })
-  const setLoading = () => dispatchLoading({ type: SET_LOADING })
+  const setLoading = () => dispatchLoading({ type: SET_LOADING, payload: {msg: 'Fetching products'} })
 
   useEffect(() => {
     setLoading()

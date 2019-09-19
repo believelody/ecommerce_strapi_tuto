@@ -6,7 +6,7 @@ const Checkout = injectStripe(CheckoutForm)
 
 const CheckoutPage = () => {
   return (
-    <StripeProvider apiKey={`${process.env.REACT_APP_STRIPE_PUBLIC_KEY}`}>
+    <StripeProvider apiKey={process.env.STRIPE_PUBLIC_KEY}>
       <Elements>
         <Checkout />
       </Elements>

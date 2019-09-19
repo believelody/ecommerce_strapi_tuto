@@ -11,7 +11,7 @@ export const loadingReducer = (state, {type, payload}) => {
         case SET_LOADING:
             return {
                 loading: true,
-                msg: payload.msg
+                msg: payload ? payload.msg : null
             }
 
         case RESET_LOADING:
