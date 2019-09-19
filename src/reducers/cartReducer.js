@@ -13,7 +13,7 @@ export const initCartState = {
 
 export const cartReducer = (state, { type, payload }) => {
     switch (type) {
-        case IMPORT_CART_FROM_LOCALSTORAGE:            
+        case IMPORT_CART_FROM_LOCALSTORAGE:
             return {
                 ...state,
                 cart: payload.cart,
@@ -30,7 +30,7 @@ export const cartReducer = (state, { type, payload }) => {
                 cart: [payload, ...state.cart],
                 total: state.total + payload.product.price
             }
-        
+
         case RESET_CART:
             return {
                 cart: [],
@@ -39,7 +39,7 @@ export const cartReducer = (state, { type, payload }) => {
 
         case REMOVE_FROM_CART:
             let selectedItem = state.cart.find(item => item.product._id === payload._id)
-            
+
             return {
                 ...state,
                 cart: state.cart.filter(item => item.product._id !== selectedItem.product._id),
@@ -58,7 +58,7 @@ export const cartReducer = (state, { type, payload }) => {
         case DECREMENT_QUANTITY:
             let itemToDecrement = state.cart.find(item => item.product._id === payload._id)
             if (itemToDecrement['quantity'] > 0) itemToDecrement['quantity'] -= 1
-            
+
             return {
                 ...state,
                 total: state.total - itemToDecrement.product.price

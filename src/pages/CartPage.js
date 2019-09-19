@@ -16,7 +16,7 @@ const CartPage = () => {
     }
 
     useEffect(() => {
-      if (localStorage.strapi_cart) {
+      if (getCart()) {
         dispatchCart({ type: IMPORT_CART_FROM_LOCALSTORAGE, payload: {cart: getCart()} })
       }
     }, [])
@@ -40,9 +40,13 @@ const CartPage = () => {
                         <Box>
                             <CartList cart={cart} />
                             <Text bold size='xl' align='center'>Total: ${total.toFixed(2)}</Text>
-                            <Text size='lg'>
-                                <Link to='/checkout'>Proceed to payment</Link>
-                            </Text>
+                            <Link to='/checkout'>
+                              <Box paddingY={3} color='navy'>
+                                <Text align='center' size='lg' color='white'>
+                                    Proceed to payment
+                                </Text>
+                              </Box>
+                            </Link>
                             <Button size='md' text='Empty Cart' onClick={emptyCart} />
                         </Box>
                     }

@@ -17,7 +17,7 @@ const BrewsPage = ({ brandId }) => {
             setBrand(res.data.brand)
             dispatchLoading({ type: RESET_LOADING })
         } catch (error) {
-            console.log(error)
+            console.log(error.message)
             dispatchLoading({ type: RESET_LOADING })
         }
     }

@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { Box, Heading, Text, Label, Button } from 'gestalt'
+import { Box, Heading, Text, Label, Button, Divider } from 'gestalt'
 import FieldInput from '../input/FieldInput'
+import CartResume from '../cart/CartResume'
 import { useAppHooks } from '../../contexts'
 import isEmpty from '../../utils/isEmpty'
 import { SET_TOAST } from '../../reducers/toastReducer'
@@ -9,7 +10,9 @@ import { OPEN_MODAL } from '../../reducers/modalReducer'
 import { SET_LOADING, RESET_LOADING } from '../../reducers/loadingReducer'
 import api from '../../api'
 import { navigate } from '@reach/router'
-import { PAYMENT_FAILED, RESET_ERRORS } from '../../reducers/checkoutReducer'
+import { PAYMENT_FAILED } from '../../reducers/checkoutReducer'
+import { IMPORT_CART_FROM_LOCALSTORAGE } from '../../reducers/cartReducer'
+import { getCart } from '../../utils/cart.utils';
 
 const CheckoutFormStyle = styled.form`
     display: inline-block;
@@ -18,11 +21,12 @@ const CheckoutFormStyle = styled.form`
 `
 
 const CheckoutForm = () => {
-    const { useCheckout, useToast, useModal, useLoading } = useAppHooks()
+    const { useCheckout, useToast, useModal, useLoading, useCart } = useAppHooks()
     const [{ isPaymentSucceed, errors }, dispatchCheckout] = useCheckout
     const [toastState, dispatchToast] = useToast
     const [modalState, dispatchModal] = useModal
     const [{ loading }, dispatchLoading] = useLoading
+    const [{cart, total}, dispatchCart] = useCart
 
     const [address, setAddress] = useState('')
     const [optional, setOptional] = useState('')
@@ -43,8 +47,8 @@ const CheckoutForm = () => {
             setCity('')
             setZIP('')
         } catch (error) {
-            console.log(error)
-            dispatchCheckout({ type: PAYMENT_FAILED, payload: { payment_failed: 'there is an error' } })
+            console.log(error.message)
+            dispatchCheckout({ type: PAYMENT_FAILED, payload: { payment_failed: error.message } })
         }
         dispatchLoading({ type: RESET_LOADING })
     }
@@ -68,6 +72,12 @@ const CheckoutForm = () => {
     }
 
     useEffect(() => {
+      if (cart.length === 0) {
+        dispatchCart({ type: IMPORT_CART_FROM_LOCALSTORAGE, payload: {cart: getCart()} })
+      }
+    }, [cart])
+
+    useEffect(() => {
         if (errors && errors.payment_failed) {
             dispatchModal({ type: OPEN_MODAL, payload: { msg: errors.payment_failed } })
         }
@@ -85,7 +95,15 @@ const CheckoutForm = () => {
             shape='rounded'
             display='flex'
             justifyContent='center'
+            direction='column'
         >
+          {
+            cart.length > 0 &&
+            <React.Fragment>
+              <CartResume cart={cart} total={total} />
+              <Divider />
+            </React.Fragment>
+          }
             <CheckoutFormStyle onSubmit={confirmOrder}>
                 <Box marginBottom={2} display='flex' direction='column' alignItems='center'>
                     <Heading color='midnight'>Checkout</Heading>

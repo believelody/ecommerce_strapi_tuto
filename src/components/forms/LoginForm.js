@@ -48,8 +48,8 @@ const LoginForm = () => {
             setPassword('')
             navigate('/')
         } catch (error) {
-            console.log(error)
-            dispatchAuth({ type: ERROR_AUTH, payload: { auth_failed: 'there is an error' } })
+            // console.log(error.message)
+            dispatchAuth({ type: ERROR_AUTH, payload: { auth_failed: error.message } })
         }
         dispatchLoading({ type: RESET_LOADING })
     }
@@ -70,6 +70,7 @@ const LoginForm = () => {
     }
 
     useEffect(() => {
+      dispatchAuth({ type: RESET_ERROR })
         if (errors && errors.auth_failed) {
             dispatchModal({ type: OPEN_MODAL, payload: { msg: errors.auth_failed } })
         }

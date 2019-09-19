@@ -40,8 +40,8 @@ const RegisterForm = () => {
             setName('')
             setEmail('')
             setPassword('')
-            dispatchAuth({ 
-                type: SUCCESS_AUTH, 
+            dispatchAuth({
+                type: SUCCESS_AUTH,
                 payload: {
                     user: { _id: res.user._id, name: res.user.username, email: res.user.email }
                 }
@@ -51,7 +51,7 @@ const RegisterForm = () => {
             dispatchToast({ type: SET_TOAST, payload: { msg: `Welcome ${name}` } })
             navigate('/')
         } catch (error) {
-            dispatchAuth({ type: ERROR_AUTH, payload: { auth_failed: 'there is an error' } })
+            dispatchAuth({ type: ERROR_AUTH, payload: { auth_failed: error.message } })
         }
         dispatchLoading({ type: RESET_LOADING })
     }
@@ -75,9 +75,10 @@ const RegisterForm = () => {
     }
 
     useEffect(() => {
-        if (errors && errors.auth_failed) {
-            dispatchModal({ type: OPEN_MODAL, payload: { msg: errors.auth_failed } })
-        }
+      dispatchAuth({ type: RESET_ERROR })
+      if (errors && errors.auth_failed) {
+          dispatchModal({ type: OPEN_MODAL, payload: { msg: errors.auth_failed } })
+      }
     }, [errors])
 
   return (
@@ -96,7 +97,7 @@ const RegisterForm = () => {
         <RegisterFormStyle onSubmit={handleSubmit}>
             <Box marginBottom={2} display='flex' direction='column' alignItems='center'>
                 <Heading color='midnight'>Let's Get Started</Heading>
-                <Text italic color='orchid'>Sign up to order some brews!</Text>                
+                <Text italic color='orchid'>Sign up to order some brews!</Text>
             </Box>
             <Box display='flex' alignItems='center' justifyContent='between' paddingY={2}>
                 <Label htmlFor='username'>

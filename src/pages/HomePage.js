@@ -22,6 +22,7 @@ const HomePage = () => {
       setBrands(res.data.brands)
       resetLoading()
     } catch (error) {
+      console.log('here')
       console.log(error.response.data)
       resetLoading()
     }

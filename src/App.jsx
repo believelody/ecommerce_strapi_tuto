@@ -49,12 +49,6 @@ const App = () => {
   const [{isConnected}, dispatchAuth] = useAuth
   const [{ loading }, dispatchLoading] = useLoading
 
-  // useEffect(() => {
-  //   if (getToken()) {
-  //     dispatchAuth({})
-  //   }
-  // }, [getToken])
-
   return (
     <AppStyle>
       <Navbar />

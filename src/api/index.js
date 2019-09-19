@@ -4,7 +4,7 @@ import brew from './brew'
 import user from './user'
 import Strapi from 'strapi-sdk-javascript'
 
-export const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:1337'
+export const apiUrl = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_API_URL : 'http://localhost:1337'
 const strapi = new Strapi(apiUrl)
 
 // export const post = data => axios.post(`${apiUrl}/graphql`, data)

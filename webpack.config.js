@@ -8,6 +8,7 @@ module.exports = {
         filename: 'index_bundle.js',
         publicPath: '/'
     },
+    devtool: 'cheap-module-source-map',
     module: {
         rules: [
             {
